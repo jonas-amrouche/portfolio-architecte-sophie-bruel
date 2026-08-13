@@ -1,20 +1,34 @@
-// on récupère la galerie dans le HTML
+// Adresse de l'API (le back-end doit tourner)
+const apiUrl = "http://localhost:5678/api/works";
+
+// La div qui contient les projets, vide dans le HTML
 const gallery = document.querySelector(".gallery");
 
-// on va chercher les projets dans le back-end
-fetch("http://localhost:5678/api/works")
-	.then(function (reponse) {
-		return reponse.json();
-	})
-	.then(function (works) {
-		console.log(works);
+// Récupère les projets dans le back-end
+async function getWorks() {
+	const response = await fetch(apiUrl);
+	const works = await response.json();
+	console.log(works);
+	displayWorks(works);
+}
 
-		// pour chaque projet on ajoute une figure dans la galerie
-		for (let i = 0; i < works.length; i++) {
-			gallery.innerHTML += `
-				<figure>
-					<img src="${works[i].imageUrl}" alt="${works[i].title}">
-					<figcaption>${works[i].title}</figcaption>
-				</figure>`;
-		}
-	});
+// Crée les figures et les ajoute à la galerie
+function displayWorks(works) {
+	for (let i = 0; i < works.length; i++) {
+		const work = works[i];
+
+		const figure = document.createElement("figure");
+		const image = document.createElement("img");
+		const caption = document.createElement("figcaption");
+
+		image.src = work.imageUrl;
+		image.alt = work.title;
+		caption.innerText = work.title;
+
+		figure.appendChild(image);
+		figure.appendChild(caption);
+		gallery.appendChild(figure);
+	}
+}
+
+getWorks();
