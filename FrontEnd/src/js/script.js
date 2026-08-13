@@ -31,4 +31,21 @@ function displayWorks(works) {
 	}
 }
 
+// Les boutons de filtres
+const filterButtons = document.querySelectorAll(".filters button");
+
+// Au clic, on déplace la classe "active" sur le bouton cliqué
+for (let i = 0; i < filterButtons.length; i++) {
+	const button = filterButtons[i];
+
+	button.addEventListener("click", function () {
+		// on enlève la sélection partout
+		for (let j = 0; j < filterButtons.length; j++) {
+			filterButtons[j].classList.remove("active");
+		}
+		// puis on la met sur celui qui vient d'être cliqué
+		button.classList.add("active");
+	});
+}
+
 getWorks();
